@@ -42,9 +42,12 @@ pipeline {
     post {
         always {
             script {
-                node {
-                   sh 'docker ps -a'
-                }
+                emailext(
+                    subject: "Jenkins Pipeline Status: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                    body: "Check the status in the Jenkins pipeline. Please check the console output for more details: ${env.BUILD_URL}",
+                    to: "kaushi.rajapakshe1@gmail.com",
+                    attachLog: true, 
+                )
             }
         }
         failure {
